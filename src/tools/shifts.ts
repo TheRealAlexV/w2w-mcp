@@ -92,6 +92,12 @@ export async function handleGetShifts(
   const sortedDates = Array.from(shiftsByDate.keys()).sort();
 
   let output = `Found ${response.shifts.length} shifts from ${args.start_date} to ${args.end_date}:\n\n`;
+  
+  // Debug: Log first shift to diagnose missing employee names
+  if (response.shifts.length > 0) {
+    const firstShift = response.shifts[0];
+    console.error('DEBUG - First shift raw data:', JSON.stringify(firstShift, null, 2));
+  }
 
   for (const date of sortedDates) {
     const shifts = shiftsByDate.get(date)!;
@@ -99,8 +105,14 @@ export async function handleGetShifts(
     
     for (const shift of shifts) {
       output += `- ${shift.START_TIME} - ${shift.END_TIME}`;
-      if (shift.EMPLOYEE_NAME) {
-        output += ` | ${shift.EMPLOYEE_NAME}`;
+      
+      // Build employee name from FIRST_NAME and LAST_NAME (API returns these separately)
+      const firstName = shift.FIRST_NAME || '';
+      const lastName = shift.LAST_NAME || '';
+      const empName = `${firstName} ${lastName}`.trim();
+      
+      if (empName) {
+        output += ` | ${empName}`;
       }
       if (shift.POSITION_NAME) {
         output += ` | ${shift.POSITION_NAME}`;

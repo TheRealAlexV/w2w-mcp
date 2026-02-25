@@ -79,12 +79,15 @@ export interface Shift {
   END_TIME: string;
   W2W_EMPLOYEE_ID?: string;
   EMPLOYEE_NAME?: string;
+  FIRST_NAME?: string;
+  LAST_NAME?: string;
   POSITION_ID?: string;
   POSITION_NAME?: string;
   CATEGORY_ID?: string;
   CATEGORY_NAME?: string;
   LOCATION_ID?: string;
   LOCATION_NAME?: string;
+  DURATION?: string;
   NOTES?: string;
   PUBLISHED?: string;
   [key: string]: string | undefined;
